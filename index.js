@@ -5,6 +5,7 @@ const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 const { MongoClient } = require('mongodb');
+console.log('changes');
 const uri = "***REMOVED***";
 const db_client = new MongoClient(uri);
 // connecting to db
