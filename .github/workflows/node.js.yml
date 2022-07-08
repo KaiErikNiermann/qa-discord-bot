@@ -5,35 +5,19 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
-
-on:
-workflow_call:
-  secrets:
-    GUILD_ID:
-      required: true
-    CLIENT_ID:
-      required: true
-    TOKEN:
-      required: true
+    branches: [ main ]
 
 jobs:
-  pass-secret-to-action:
-    build:
-
-      runs-on: ubuntu-latest
-
-      env:
-
-      steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          GUILD_ID: ${{ secrets.GUILD_ID }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          TOKEN: ${{ secrets.TOKEN }}
-          node-version: 16.x
-          cache: 'npm'
-      - run: npm start
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - uses: actions/setup-node@main
+      with:
+        node-version: 16.x
+    - run: npm start
  
+    env:
+      GUILD_ID: ${{ secrets.GUILD_ID }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      TOKEN: ${{ secrets.TOKEN }}
