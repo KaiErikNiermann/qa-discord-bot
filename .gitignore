@@ -41,3 +41,5 @@ Thumbs.db
 src/config.json
 config.json
 .env
+newLogin.pem
+newLogin.pem:Zone.Identifier

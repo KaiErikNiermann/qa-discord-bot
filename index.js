@@ -1,21 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
+
 const { MongoClient } = require('mongodb');
 const uri = "***REMOVED***";
 const db_client = new MongoClient(uri);
 // connecting to db
 async function main() {
-    try {
-        await db_client.connect();
-    }
-    catch (e) {
-        console.error(e);
-    }
+    try { await db_client.connect(); } catch (e) { console.error(e); }
 }
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 client.commands = new Collection();
