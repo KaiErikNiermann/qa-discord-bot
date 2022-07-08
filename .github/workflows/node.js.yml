@@ -7,15 +7,15 @@ on:
   push:
     branches: [ "main" ]
 
-  on:
-  workflow_call:
-    secrets:
-      GUILD_ID:
-        required: true
-      CLIENT_ID:
-        required: true
-      TOKEN:
-        required: true
+on:
+workflow_call:
+  secrets:
+    GUILD_ID:
+      required: true
+    CLIENT_ID:
+      required: true
+    TOKEN:
+      required: true
 
 jobs:
   pass-secret-to-action:
