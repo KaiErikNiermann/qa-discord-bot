@@ -5,6 +5,7 @@ const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 const {MongoClient} = require('mongodb');
+import { initializeApp } from 'firebase/app';
 
 const uri = "***REMOVED***";
 const db_client = new MongoClient(uri);
