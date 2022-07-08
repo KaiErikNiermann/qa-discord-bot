@@ -15,7 +15,7 @@ jobs:
     - uses: actions/setup-node@main
       with:
         node-version: 16.x
-    - run: echo ${{ secrets.TEST_VALUE }}
+    - run: echo ${{ secrets.MYSECRET }}
  
     env:
       GUILD_ID: ${{ secrets.GUILD_ID }}
