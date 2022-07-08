@@ -26,7 +26,6 @@ const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
-    console.log(`setting ${command.data.name} for command ${command}`);
     client.commands.set(command.data.name, command);
 }
 // registering db_commands
@@ -34,9 +33,7 @@ const db_commandsPath = path.join(__dirname, 'db_commands');
 const db_commandFiles = fs.readdirSync(db_commandsPath).filter((file) => file.endsWith('.js'));
 for (const file of db_commandFiles) {
     const filePath = path.join(db_commandsPath, file);
-    console.log(`new path ${filePath}`);
     const command = require(filePath);
-    console.log(`setting ${command.name} for command ${command}`);
     db_command_coll.set(command.name, command);
 }
 // registering events

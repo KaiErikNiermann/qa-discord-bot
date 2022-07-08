@@ -18,18 +18,7 @@ module.exports = {
             .setColor('#ff0000')
             .setTitle(`question: ${myString}`)
 
-		await interaction.reply({ embeds: [questionEmbed] }).then(() => {
-                const filter = m => m.content.includes(`a`);
-                const collector = interaction.channel.createMessageCollector({filter, time: 5000, max: 5});
-
-                collector.on('collect', m => {
-                    console.log(`collected ${m.content}`);
-                });
-
-                collector.on('end', collected => {
-                    console.log(`collected ${collected.size} items`);
-                });
-            });
+		await interaction.reply({ embeds: [questionEmbed] });
 
         return myString;
 	},
