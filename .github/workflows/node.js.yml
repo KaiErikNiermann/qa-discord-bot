@@ -19,6 +19,6 @@ jobs:
     - run: npm start
  
     env:
-      GUILD_ID: ${{ main.secrets.GUILD_ID }}
-      CLIENT_ID: ${{ main.secrets.CLIENT_ID }}
-      TOKEN: ${{ main.secrets.TOKEN }}
+      GUILD_ID: ${{ secrets.GUILD_ID }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      TOKEN: ${{ secrets.TOKEN }}
