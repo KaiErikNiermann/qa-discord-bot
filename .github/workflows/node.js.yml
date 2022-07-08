@@ -18,9 +18,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     env:
-      GUILD_ID: ${{ env.GUILD_ID }}
-      CLIENT_ID: ${{ env.CLIENT_ID }}
-      TOKEN: ${{ env.TOKEN }}
+      GUILD_ID: ${{ secrets.GUILD_ID }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      TOKEN: ${{ secrets.TOKEN }}
 
     steps:
     - uses: actions/checkout@v3
