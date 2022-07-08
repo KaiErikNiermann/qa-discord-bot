@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
+const dotenv = require('dotenv');
+dotenv.config();
+console.log(process.env.TOKEN);
+console.log(process.env.GUILD_ID);
 console.log(process.env.CLIENT_ID);
-const { token } = require('./config.json');
 const { MongoClient } = require('mongodb');
-console.log('changes');
 const uri = "mongodb+srv://Applesauce:MgYfjblfhd0Qaz3T@cluster0.hul1v.mongodb.net/test";
 const db_client = new MongoClient(uri);
 // connecting to db
@@ -73,4 +75,4 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 main().catch(console.error);
-client.login(token);
+client.login(process.env.TOKEN);
