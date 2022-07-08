@@ -3,6 +3,9 @@ import { Interaction } from "discord.js";
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
+console.log(process.env.CLIENT_ID);
+
+
 const { token } = require('./config.json');
 const {MongoClient} = require('mongodb');
 import { initializeApp } from 'firebase/app';

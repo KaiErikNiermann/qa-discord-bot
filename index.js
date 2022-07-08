@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
+console.log(process.env.CLIENT_ID);
 const { token } = require('./config.json');
 const { MongoClient } = require('mongodb');
 console.log('changes');
