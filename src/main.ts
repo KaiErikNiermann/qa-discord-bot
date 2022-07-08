@@ -28,7 +28,6 @@ const commandFiles = fs.readdirSync(commandsPath).filter((file : any) => file.en
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
-	console.log(`setting ${command.data.name} for command ${command}`);
 	client.commands.set(command.data.name, command);
 }
 
@@ -38,10 +37,7 @@ const db_commandFiles = fs.readdirSync(db_commandsPath).filter((file : any) => f
 
 for (const file of db_commandFiles) {
 	const filePath = path.join(db_commandsPath, file);
-	console.log(`new path ${filePath}`);
 	const command = require(filePath);
-
-	console.log(`setting ${command.name} for command ${command}`);
 	db_command_coll.set(command.name, command);
 }
 
@@ -65,14 +61,14 @@ client.on('interactionCreate', async (interaction : any) => {
 	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
-	const db_command = db_command_coll.get('create');
+	const create_entry = db_command_coll.get('create');
 	
 	if (!command) return;
 
 	try {
 		let res = await command.execute(interaction);
 		if (interaction.commandName == 'echo') {
-			await db_command.execute(db_client, {
+			await create_entry.execute(db_client, {
 				question: `${res}`,
 				status: 0
 			});
