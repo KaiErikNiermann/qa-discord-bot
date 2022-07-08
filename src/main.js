@@ -53,13 +53,13 @@ client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand())
         return;
     const command = client.commands.get(interaction.commandName);
-    const db_command = db_command_coll.get('create');
+    const create_entry = db_command_coll.get('create');
     if (!command)
         return;
     try {
         let res = await command.execute(interaction);
         if (interaction.commandName == 'echo') {
-            await db_command.execute(db_client, {
+            await create_entry.execute(db_client, {
                 question: `${res}`,
                 status: 0
             });
