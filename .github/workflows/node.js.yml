@@ -8,17 +8,17 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
     - uses: actions/setup-node@main
       with:
         node-version: 16.x
-    - run: npm ci
-    - run: npm start
+    - run: echo "test"
  
     env:
       GUILD_ID: ${{ secrets.GUILD_ID }}
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
       TOKEN: ${{ secrets.TOKEN }}
+      
