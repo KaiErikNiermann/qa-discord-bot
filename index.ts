@@ -17,6 +17,7 @@ async function main() {
     try { await db_client.connect(); } catch (e) { console.error(e); } 
 }
 
+
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 
 client.commands = new Collection();
