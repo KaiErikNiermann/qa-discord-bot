@@ -7,6 +7,8 @@ const { token } = require('./config.json');
 const {MongoClient} = require('mongodb');
 import { initializeApp } from 'firebase/app';
 
+console.log('changes');
+
 const uri = "mongodb+srv://Applesauce:MgYfjblfhd0Qaz3T@cluster0.hul1v.mongodb.net/test";
 const db_client = new MongoClient(uri);
 
@@ -55,7 +57,6 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args: any) => event.execute(...args));
 	}
 }
-
 
 client.on('interactionCreate', async (interaction : any) => {
 
