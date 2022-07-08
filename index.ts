@@ -6,10 +6,6 @@ const { Client, Collection, Intents } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log(process.env.TOKEN);
-console.log(process.env.GUILD_ID);
-console.log(process.env.CLIENT_ID);
-
 const {MongoClient} = require('mongodb');
 
 
