@@ -86,4 +86,4 @@ client.on('interactionCreate', async (interaction : any) => {
 
 main().catch(console.error);
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN);//
