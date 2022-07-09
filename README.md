@@ -6,7 +6,7 @@ A simple discord bot to manage a channel focused on questions.
 # Current Features 
 - Make and modify a question 
 - Answer a question 
-- Database to keep track of questions and their statuses
+- Database (mongodb) to keep track of questions and their statuses 
 
 ## Future Features 
 - Website to view open and closed questions
