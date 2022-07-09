@@ -8,17 +8,17 @@ dotenv.config();
 
 const {MongoClient} = require('mongodb');
 
-
 const uri = "***REMOVED***";
 const db_client = new MongoClient(uri);
 
 // connecting to db
-async function main() {
+async function main(): Promise<void> {
     try { await db_client.connect(); } catch (e) { console.error(e); } 
 }
 
+export { db_client };
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 client.commands = new Collection();
 const db_command_coll = new Collection();
@@ -30,8 +30,10 @@ const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter((file : any) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
+
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
+	console.log(`registered ${command.data.name}`);
 	client.commands.set(command.data.name, command);
 }
 
@@ -44,6 +46,8 @@ for (const file of db_commandFiles) {
 	const command = require(filePath);
 	db_command_coll.set(command.name, command);
 }
+
+export { db_command_coll };
 
 // registering events
 const eventsPath = path.join(__dirname, 'events');
@@ -59,7 +63,6 @@ for (const file of eventFiles) {
 	}
 }
 
-
 client.on('interactionCreate', async (interaction : any) => {
 
 	if (!interaction.isCommand()) return;
@@ -70,14 +73,7 @@ client.on('interactionCreate', async (interaction : any) => {
 	if (!command) return;
 
 	try {
-		let res = await command.execute(interaction);
-		if (interaction.commandName == 'echo') {
-			await create_entry.execute(db_client, {
-				question: `${res}`,
-				status: 0
-			});
-		} 
-
+		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });

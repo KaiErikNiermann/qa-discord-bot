@@ -3,8 +3,8 @@ const {MongoClient} = require('mongodb');
 module.exports = {
     name: 'find',
     async execute(client, nameOfListing) {
-        const result = await client.db("sample_airbnb")
-                            .collection("listingsAndReviews")
+        const result = await client.db("main_db")
+                            .collection("QandA_collection")
                             .findOne({ name: nameOfListing });
     
         if (result) {

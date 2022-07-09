@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Message } = require('discord.js');
+const katex = require('katex');
 
 module.exports = {
 	name: 'test-command',
