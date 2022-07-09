@@ -1,19 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.db_command_coll = exports.db_client = void 0;
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
-
 const { MongoClient } = require('mongodb');
 const uri = "mongodb+srv://Applesauce:MgYfjblfhd0Qaz3T@cluster0.hul1v.mongodb.net/test";
 const db_client = new MongoClient(uri);
+exports.db_client = db_client;
 // connecting to db
 async function main() {
-    try { await db_client.connect(); } catch (e) { console.error(e); }
+    try {
+        await db_client.connect();
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 client.commands = new Collection();
 const db_command_coll = new Collection();
+exports.db_command_coll = db_command_coll;
 let questions = [];
 // registering commands
 const commandsPath = path.join(__dirname, 'commands');
@@ -21,6 +30,7 @@ const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
+    console.log(`registered ${command.data.name}`);
     client.commands.set(command.data.name, command);
 }
 // registering db_commands
@@ -52,13 +62,7 @@ client.on('interactionCreate', async (interaction) => {
     if (!command)
         return;
     try {
-        let res = await command.execute(interaction);
-        if (interaction.commandName == 'echo') {
-            await create_entry.execute(db_client, {
-                question: `${res}`,
-                status: 0
-            });
-        }
+        await command.execute(interaction);
     }
     catch (error) {
         console.error(error);
