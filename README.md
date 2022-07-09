@@ -1,7 +1,7 @@
 # Discord Question Bot
 A simple discord bot to manage a channel focused on questions.
 
-### Note 
+### Note
 Bot is not currently public and only works on your server
 ---
 # Current Features 
