@@ -1,74 +1,52 @@
-import { Interaction } from "discord.js";
 
-const fs = require('node:fs');
-const path = require('node:path');
+import fs = require('node:fs');
+import path = require('node:path');
+import { Interaction } from 'discord.js';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Client, Collection, Intents } = require('discord.js');
-const dotenv = require('dotenv');
+import dotenv = require('dotenv');
 dotenv.config();
-
-const {MongoClient} = require('mongodb');
-
-const uri = "***REMOVED***";
-const db_client = new MongoClient(uri);
-
-// connecting to db
-async function main(): Promise<void> {
-    try { await db_client.connect(); } catch (e) { console.error(e); } 
-}
-
-export { db_client };
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, "GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 client.commands = new Collection();
-const db_command_coll = new Collection();
-
-let questions : Array<string> = [];
 
 // registering commands
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter((file : any) => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter((file : string) => file.endsWith('.ts'));
 
 for (const file of commandFiles) {
 
-	const filePath = path.join(commandsPath, file);
+	const filePath : string = path.join(commandsPath, file);
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const command = require(filePath);
-	console.log(`registered ${command.data.name}`);
-	client.commands.set(command.data.name, command);
-}
-
-// registering db_commands
-const db_commandsPath = path.join(__dirname, 'db_commands');
-const db_commandFiles = fs.readdirSync(db_commandsPath).filter((file : any) => file.endsWith('.js'));
-
-for (const file of db_commandFiles) {
-	const filePath = path.join(db_commandsPath, file);
-	const command = require(filePath);
-	db_command_coll.set(command.name, command);
-}
-
-export { db_command_coll };
-
-// registering events
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter((file: any) => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
-	if (event.once) {
-		client.once(event.name, (...args: any) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args: any) => event.execute(...args));
+	try {
+		client.commands.set(command.data.name, command);
+	} catch (error) { 
+		console.log(`${error}`);
 	}
 }
 
-client.on('interactionCreate', async (interaction : any) => {
+// registering and listenting to events
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter((file: string) => file.endsWith('.ts'));
+
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const event = require(filePath);
+	if (event.once) {
+		client.once(event.name, (...args: Array<unknown>) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args: Array<unknown>) => event.execute(...args));
+	}
+}
+
+client.on('interactionCreate', async (interaction : Interaction) => {
 
 	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
-	const create_entry = db_command_coll.get('create');
 	
 	if (!command) return;
 
@@ -80,6 +58,6 @@ client.on('interactionCreate', async (interaction : any) => {
 	}
 });
 
-main().catch(console.error);
+
 
 client.login(process.env.TOKEN);//
