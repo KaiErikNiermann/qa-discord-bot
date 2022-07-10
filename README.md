@@ -22,6 +22,7 @@ git clone https://github.com/KaiErikNiermann/QandA-discordBot.git
 
 2. Create a `.env` file with the following contents in the bots main directory
 ```
+DB_CONNECT=<your mongodb connect link>
 CLIENT_ID=<your bots client ID>
 GUILD_ID=<your bots guild ID>
 TOKEN=<your bot token>
