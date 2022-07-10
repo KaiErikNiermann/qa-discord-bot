@@ -43,4 +43,4 @@ config.json
 .env
 newLogin.pem
 newLogin.pem:Zone.Identifier
-./node_modules
+node_modules 
