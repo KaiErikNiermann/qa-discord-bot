@@ -3,7 +3,6 @@ import fs = require('node:fs');
 import path = require('node:path');
 import { Collection } from 'discord.js';
 
-const uri = "***REMOVED***";
 const db_client = new MongoClient(uri);
 
 // connecting to db
