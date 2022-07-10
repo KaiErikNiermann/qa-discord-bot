@@ -27,6 +27,7 @@ CLIENT_ID=<your bots client ID>
 GUILD_ID=<your bots guild ID>
 TOKEN=<your bot token>
 ```
+**Note** ~ Read up on how to setup mongodb here https://www.mongodb.com/docs/manual/tutorial/getting-started/
 
 3. Run the bot
 ```
