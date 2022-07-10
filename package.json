@@ -2,10 +2,10 @@
   "name": "src",
   "version": "1.0.0",
   "description": "myProject",
-  "main": "main.ts",
+  "main": "index.ts",
   "scripts": {
-    "test": "npm start",
-    "start": "node index.js"
+    "deploy-commands": "ts-node deploy-commands.ts",
+    "start": "ts-node index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +23,11 @@
     "mongoose": "^6.4.3"
   },
   "devDependencies": {
-    "eslint": "^8.19.0"
+    "@types/node": "^18.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
   }
 }
