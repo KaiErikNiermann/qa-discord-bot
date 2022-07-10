@@ -44,3 +44,4 @@ config.json
 newLogin.pem
 newLogin.pem:Zone.Identifier
 node_modules
+sensetive-info.txt
