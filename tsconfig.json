@@ -1,10 +1,22 @@
 {
-  "compilerOptions": {
-    "target": "es2020",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+    "ts-node": {
+        "files": true
+    },
+    // TODO - maybe switch to something other than ts-node to avoid this
+    "files": [
+        "src/index.ts",
+        "src/index.d.ts",
+        "src/deploy_commands.ts",
+        "src/db.ts",
+        "src/utils/create.ts",
+        "src/events/answer_res.ts",
+        "src/commands/question.ts"
+    ],
+    "compilerOptions": {
+        "target": "es2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+        "module": "commonjs" /* Specify what module code is generated. */,
+        "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+        "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+        "strict": true /* Enable all strict type-checking options. */
+    }
 }

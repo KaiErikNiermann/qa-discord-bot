@@ -1,17 +1,19 @@
 {
   "name": "src",
   "version": "1.0.0",
-  "description": "myProject",
+  "description": "Question and Answer Discord Bot",
   "main": "index.ts",
   "scripts": {
-    "deploy-commands": "ts-node deploy-commands.ts",
-    "start": "ts-node index.ts"
+    "deploy-commands": "ts-node src/deploy-commands.ts",
+    "start": "ts-node --files src/index.ts"
   },
-  "author": "",
+  "types": "src/index.d.ts",
+  "author": "Kai Erik Niermann",
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
     "@discordjs/rest": "^0.5.0",
+    "cors": "^2.8.5",
     "discord-api-types": "^0.36.1",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
@@ -23,11 +25,27 @@
     "mongoose": "^6.4.3"
   },
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "@types/node": "^18.0.3",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "eslint": "^8.19.0",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaiErikNiermann/QandA-discordBot.git"
+  },
+  "keywords": [
+    "discord.js",
+    "discord",
+    "bot",
+    "faq",
+    "questions"
+  ],
+  "bugs": {
+    "url": "https://github.com/KaiErikNiermann/QandA-discordBot/issues"
+  },
+  "homepage": "https://github.com/KaiErikNiermann/QandA-discordBot#readme"
 }
