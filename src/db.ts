@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import fs from "node:fs";
 import path from "node:path";
 import { Collection } from "discord.js";
+import { client } from "./index";
 
 const uri = `${process.env.DB_CONNECT}`;
 console.log(uri);
@@ -40,8 +41,15 @@ const change_stream = db_client
 change_stream.on("change", (change) => {
     if (change.operationType === "update") {
         console.log("Changed entry:", change.fullDocument);
+        const channel = client.channels.cache.get(change.fullDocument?.channel_id);
+        if (channel?.isText()) {
+            channel.send({
+                content: `**${change.fullDocument?.question}**\n${change.fullDocument?.answer}`,
+            })
+        } 
     }
 });
+
 export { db_command_coll, db_command };
 
 main().catch(console.error);

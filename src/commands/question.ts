@@ -44,8 +44,12 @@ module.exports = {
 
         const questionEntry: db_listing = {
             question: `${user_question}`,
-            guild_id: `${interaction.guildId}`,
+            answer: "",
             status: 0,
+            
+            guild_id: `${interaction.guildId}`,
+            channel_id: `${interaction.channelId}`,
+            message_id: `${interaction.id}`,
         };
 
         await interaction.reply({ embeds: [questionEmbed], components: [deleteButton] });

@@ -5,8 +5,12 @@ import { CommandInteraction } from "discord.js";
 declare global {
     type db_listing = {
         question: string;
-        guild_id: string;
+        answer: string;
         status: number;
+        
+        guild_id: string;
+        channel_id: string;
+        message_id: string;
     };
 
     type db_command = {
