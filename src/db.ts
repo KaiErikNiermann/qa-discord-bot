@@ -32,6 +32,16 @@ for (const file of db_commandFiles) {
     db_command_coll.set(command.name, command);
 }
 
+const change_stream = db_client
+    .db("main_db")
+    .collection("QandA_collection")
+    .watch([], { fullDocument: 'updateLookup' });
+
+change_stream.on("change", (change) => {
+    if (change.operationType === "update") {
+        console.log("Changed entry:", change.fullDocument);
+    }
+});
 export { db_command_coll, db_command };
 
 main().catch(console.error);
