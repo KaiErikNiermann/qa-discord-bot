@@ -7,7 +7,6 @@ module.exports = {
         try {
             if (
                 message.type == "REPLY" && // message is a reply
-                !message.author.bot && // message is not from a bot
                 !message.content.startsWith(`-e`) && // message is not an edit
                 !message.content.startsWith(`-d`) // message is not a delete
             ) {
@@ -24,13 +23,29 @@ module.exports = {
                 bot_reply.react(`❔`);
                 bot_reply.react(`✅`);
 
-                const colletionFilter = (reaction: MessageReaction, author: User) => {
+                const colletionFilter = (
+                    reaction: MessageReaction,
+                    author: User
+                ) => {
                     const emoji_name: string = reaction.emoji.name ?? ""; // default value in case of null
                     return (
                         ["❔", "✅"].includes(emoji_name) &&
                         `<@${author.id}>` === user
                     );
                 };
+
+                // update db with answer by matching question
+                db_client
+                    .db("main_db")
+                    .collection("QandA_collection")
+                    .updateOne(
+                        { question: question_embed.title },
+                        {
+                            $set: {
+                                answer: `${message.content}`,
+                            },
+                        }
+                    );
 
                 bot_reply
                     .awaitReactions({
@@ -69,7 +84,6 @@ module.exports = {
                                     { question: question_embed.title },
                                     {
                                         $set: {
-                                            answer: `${message.content}`,
                                             status: 1,
                                         },
                                     }

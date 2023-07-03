@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import fs from "node:fs";
 import path from "node:path";
-import { Collection } from "discord.js";
+import { AnyChannel, Collection, TextChannel } from "discord.js";
 import { client } from "./index";
 
 const uri = `${process.env.DB_CONNECT}`;
@@ -36,17 +36,25 @@ for (const file of db_commandFiles) {
 const change_stream = db_client
     .db("main_db")
     .collection("QandA_collection")
-    .watch([], { fullDocument: 'updateLookup' });
+    .watch([], { fullDocument: "updateLookup" });
 
 change_stream.on("change", (change) => {
     if (change.operationType === "update") {
         console.log("Changed entry:", change.fullDocument);
-        const channel = client.channels.cache.get(change.fullDocument?.channel_id);
-        if (channel?.isText()) {
-            channel.send({
-                content: `**${change.fullDocument?.question}**\n${change.fullDocument?.answer}`,
-            })
-        } 
+        
+        const channel: TextChannel = client.channels.cache.get(
+            change.fullDocument?.channel_id
+        ) as TextChannel;
+
+        const message_id = change.fullDocument?.message_id;
+        console.log(message_id);
+
+        channel.messages.fetch(message_id).then((message) => {
+            message.reply(`anon: ${change.fullDocument?.answer}`);    
+        }).catch((error) => {
+            console.error(error);
+        });
+
     }
 });
 

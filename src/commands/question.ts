@@ -46,13 +46,15 @@ module.exports = {
             question: `${user_question}`,
             answer: "",
             status: 0,
-            
+
             guild_id: `${interaction.guildId}`,
             channel_id: `${interaction.channelId}`,
-            message_id: `${interaction.id}`,
+            message_id: ``,
         };
 
         await interaction.reply({ embeds: [questionEmbed], components: [deleteButton] });
+        const message = await interaction.fetchReply();
+        questionEntry.message_id = `${message.id}`;
 
         // add question to db
         const inserted_id = await db_client
