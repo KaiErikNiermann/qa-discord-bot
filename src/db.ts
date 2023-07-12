@@ -50,7 +50,9 @@ change_stream.on("change", (change) => {
         console.log(message_id);
 
         channel.messages.fetch(message_id).then((message) => {
-            message.reply(`anon: ${change.fullDocument?.answer}`);    
+            message.reply(`${change.fullDocument?.answer}`);    
+            // emit messageCreate event
+            // client.emit("messageCreate", message);
         }).catch((error) => {
             console.error(error);
         });

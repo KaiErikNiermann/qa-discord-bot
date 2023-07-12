@@ -3,7 +3,12 @@ import {
     ButtonBuilder,
     SlashCommandBuilder,
 } from "@discordjs/builders";
-import { MessageEmbed, CommandInteraction, MessageActionRow, MessageButton } from "discord.js";
+import {
+    MessageEmbed,
+    CommandInteraction,
+    MessageActionRow,
+    MessageButton,
+} from "discord.js";
 import { db_client, db_command_coll, db_command } from "../db";
 import { MessageButtonStyles } from "discord.js/typings/enums";
 
@@ -26,9 +31,7 @@ module.exports = {
         const questionEmbed = new MessageEmbed()
             .setColor("#ff0000")
             .setTitle(`${user_question}`)
-            .setDescription(
-                `to edit reply with \`-e <your updated question>\``
-            )
+            .setDescription(`to edit reply with \`-e <your updated question>\``)
             .addFields({
                 name: "question from",
                 value: `<@${interaction.user.id}>`,
@@ -52,7 +55,10 @@ module.exports = {
             message_id: ``,
         };
 
-        await interaction.reply({ embeds: [questionEmbed], components: [deleteButton] });
+        await interaction.reply({
+            embeds: [questionEmbed],
+            components: [deleteButton],
+        });
         const message = await interaction.fetchReply();
         questionEntry.message_id = `${message.id}`;
 

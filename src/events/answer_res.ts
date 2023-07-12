@@ -34,6 +34,14 @@ module.exports = {
                     );
                 };
 
+                // check if answer is already present 
+                const answer = await db_client
+                    .db("main_db")
+                    .collection("QandA_collection")
+                    .findOne({ question: question_embed.title });
+
+                console.log(answer);
+
                 // update db with answer by matching question
                 db_client
                     .db("main_db")
