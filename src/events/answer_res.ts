@@ -99,14 +99,14 @@ module.exports = {
                         } else {
                             bot_reply.reply(
                                 `<@${message.author.id}>, ${user} needs more help`
-                            );
+                            ).catch((err) => console.log(err));
                         }
                     })
                     .catch(() => {
                         bot_reply.reply(
                             "User did not react, question is closed"
                         );
-                    });
+                    }).catch((err) => console.log(err));
             }
         } catch (error) {
             // replied message was not a question
