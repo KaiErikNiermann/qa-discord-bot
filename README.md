@@ -51,3 +51,9 @@ curl -sL https://deb.nodesource.com/setup_<version-number>.x | sudo -E bash - &&
 sudo apt-get install -y nodejs &&
 npm install -g npm@latest
 ```
+
+#### docker
+
+Also if you want to work with the docker container you will need docker, for the installation refer to
+
+- `https://docs.docker.com/desktop/install/linux-install/`
