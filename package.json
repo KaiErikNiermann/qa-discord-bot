@@ -4,7 +4,7 @@
   "description": "Question and Answer Discord Bot",
   "main": "index.ts",
   "scripts": {
-    "deploy-commands": "ts-node src/deploy-commands.ts",
+    "deploy-commands": "ts-node --files src/deploy_commands.ts",
     "start": "ts-node --files src/index.ts"
   },
   "types": "src/index.d.ts",

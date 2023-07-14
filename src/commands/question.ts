@@ -9,8 +9,7 @@ import {
     MessageActionRow,
     MessageButton,
 } from "discord.js";
-import { db_client, db_command_coll, db_command } from "../db";
-import { MessageButtonStyles } from "discord.js/typings/enums";
+import { db_client } from "../db";
 
 module.exports = {
     name: "question",
@@ -44,6 +43,13 @@ module.exports = {
                 .setLabel("delete")
                 .setStyle("PRIMARY")
         );
+        
+        await interaction.reply({
+            embeds: [questionEmbed],
+            components: [deleteButton],
+        });
+        
+        const message = await interaction.fetchReply();
 
         const questionEntry: db_listing = {
             question: `${user_question}`,
@@ -52,15 +58,8 @@ module.exports = {
 
             guild_id: `${interaction.guildId}`,
             channel_id: `${interaction.channelId}`,
-            message_id: ``,
+            message_id: `${message.id}`,
         };
-
-        await interaction.reply({
-            embeds: [questionEmbed],
-            components: [deleteButton],
-        });
-        const message = await interaction.fetchReply();
-        questionEntry.message_id = `${message.id}`;
 
         // add question to db
         const inserted_id = await db_client
