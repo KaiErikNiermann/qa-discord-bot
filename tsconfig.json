@@ -6,9 +6,9 @@
     "files": [
         "src/index.ts",
         "src/index.d.ts",
-        "src/deploy_commands.ts",
-        "src/db.ts",
-        "src/utils/create.ts",
+        "src/utils/bot/deploy_commands.ts",
+        "src/utils/bot/db.ts",
+        "src/utils/database/create.ts",
         "src/events/answer_res.ts",
         "src/commands/question.ts"
     ],

@@ -9,7 +9,7 @@ import {
     MessageActionRow,
     MessageButton,
 } from "discord.js";
-import { db_client } from "../db";
+import { db_client } from "../utils/bot/db";
 
 module.exports = {
     name: "question",

@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 import fs from "node:fs";
 import path from "node:path";
 import { AnyChannel, Collection, TextChannel } from "discord.js";
-import { client } from "./index";
+import { client } from "../../index";
 
 const uri = `${process.env.DB_CONNECT}`;
 const db_client: MongoClient = new MongoClient(uri);
@@ -21,7 +21,7 @@ const db_command_coll = new Collection<string, db_command>();
 export { db_client };
 
 // registering db_commands
-const db_commandsPath: string = path.join(__dirname, "db_utils");
+const db_commandsPath: string = path.join(__dirname, "utils/database");
 const db_commandFiles: string[] = fs
     .readdirSync(db_commandsPath)
     .filter((file: string) => file.endsWith(".ts"));
