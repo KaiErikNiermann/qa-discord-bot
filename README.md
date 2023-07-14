@@ -11,10 +11,10 @@ A simple discord bot which allows the management of questions and answers in dis
 
 ## Future Features
 
-- [] Ability to download and backup question db
-- [] Markdown support for questions
-- [] Improved system for incoming dashboard answers
-- [] Latex support for questions
+- [ ] Ability to download and backup question db
+- [ ] Markdown support for questions
+- [ ] Improved system for incoming dashboard answers
+- [ ] Latex support for questions
 
 ## Setup
 
