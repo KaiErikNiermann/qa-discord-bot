@@ -18,7 +18,6 @@ const command_collection: Collection<string, command> = new Collection<
     command
 >();
 
-// load commands and events
 const loadCommands = (commandsPath: string) => {
     const commandFiles = fs
         .readdirSync(commandsPath)
