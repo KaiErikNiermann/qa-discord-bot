@@ -27,6 +27,4 @@ jobs:
           get checkout main &&
           git fetch --all && 
           git reset --hard origin/main &&
-          git pull origin main &&
-          docker build -t qanda-discord-bot . &&
-          docker run -d qanda-discord-bot 
+          git pull origin main 
