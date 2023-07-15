@@ -1,4 +1,4 @@
-import { MongoClient, Document } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 module.exports = {
     name: 'create', 

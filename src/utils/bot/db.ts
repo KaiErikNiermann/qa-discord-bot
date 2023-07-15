@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import fs from "node:fs";
 import path from "node:path";
-import { AnyChannel, Collection, TextChannel } from "discord.js";
+import { Collection, TextChannel } from "discord.js";
 import { client } from "../../index";
 
 const uri = `${process.env.DB_CONNECT}`;

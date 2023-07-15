@@ -1,5 +1,5 @@
 import { MessageEmbed, Message, MessageReaction, User } from "discord.js";
-import { db_client, db_command_coll } from "../utils/bot/db";
+import { db_client } from "../utils/bot/db";
 
 module.exports = {
     name: "messageCreate",
