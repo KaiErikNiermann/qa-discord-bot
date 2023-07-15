@@ -10,7 +10,6 @@ jobs:
   deploy:
     name: deploy in EC2
     runs-on: ubuntu-latest
-    
 
     steps:
       - uses: actions/checkout@v2
