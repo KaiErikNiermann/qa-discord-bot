@@ -30,8 +30,8 @@ jobs:
             git fetch --all && 
             git reset --hard origin/main &&
             git pull origin main &&
-            echo 'DB_CONNECT=${{ secrets.DB_CONNECT }}' > .env &&
-            echo 'TOKEN=${{ secrets.TOKEN }}' >> .env &&
+            echo "DB_CONNECT=${{ secrets.DB_CONNECT }}" > .env &&
+            echo "TOKEN=${{ secrets.TOKEN }}" >> .env &&
             sudo docker build -t qanda-discord-bot . &&
             sudo docker run -d qanda-discord-bot 
             '

@@ -4,6 +4,7 @@ RUN mkdir -p /usr/src/bot
 WORKDIR /usr/src/bot
 
 COPY package.json /usr/src/bot
+COPY .env /usr/src/bot
 RUN npm install
 
 COPY . /usr/src/bot/
