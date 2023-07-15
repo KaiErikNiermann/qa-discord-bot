@@ -21,7 +21,7 @@ const db_command_coll = new Collection<string, db_command>();
 export { db_client };
 
 // registering db_commands
-const db_commandsPath: string = path.join(__dirname, "utils/database");
+const db_commandsPath: string = path.join(__dirname, "../database");
 const db_commandFiles: string[] = fs
     .readdirSync(db_commandsPath)
     .filter((file: string) => file.endsWith(".ts"));
