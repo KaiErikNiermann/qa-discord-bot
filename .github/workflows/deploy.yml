@@ -19,7 +19,7 @@ jobs:
           USER_NAME: ${{ secrets.USER_NAME }}
 
         run: |
-          echo "$PRIVATE_KEY" > private && chmod 705 private
+          echo "$PRIVATE_KEY" > private && chmod 600 private
           ssh -o StrictHostKeyChecking=no -i private ${USER_NAME}@${HOSTNAME} 
 
           cd /home/ubuntu/qanda-discord-bot
