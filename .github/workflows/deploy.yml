@@ -21,14 +21,13 @@ jobs:
         # ssh into instance and deploy
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} 
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
           
-            '
             cd /home/ubuntu/QandA-discord-bot &&
             get checkout main &&
             git fetch --all && 
             git reset --hard origin/main &&
             git pull origin main &&
-            docker build -t qanda-discord-bot . &&
-            docker run -d qanda-discord-bot 
+            sudo docker build -t qanda-discord-bot . &&
+            sudo docker run -d qanda-discord-bot 
             '
