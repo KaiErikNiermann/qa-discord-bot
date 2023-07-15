@@ -8,11 +8,13 @@ on:
 
 jobs:
   deploy:
+    name: deploy in EC2
     runs-on: ubuntu-latest
+    
 
     steps:
       - uses: actions/checkout@v2
-      - name: deploy in EC2
+      - name: build and deploy
         env: 
           PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           HOSTNAME: ${{ secrets.HOSTNAME }}
