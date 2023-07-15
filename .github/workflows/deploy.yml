@@ -23,7 +23,7 @@ jobs:
           echo "$PRIVATE_KEY" > private && chmod 600 private
           ssh -o StrictHostKeyChecking=no -i private ${USER_NAME}@${HOSTNAME} 
 
-          cd /home/ubuntu/QandA-discord-bot
+          cd QandA-discord-bot
           get checkout main &&
           git fetch --all && 
           git reset --hard origin/main &&
