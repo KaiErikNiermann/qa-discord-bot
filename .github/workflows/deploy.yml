@@ -1,37 +1,51 @@
-name: qanda-discord-bot
+name: deploy-web-server
 
 on: 
-  push:
-  pull_request: 
-    branches: 
-      - main
+    push:
+        branches:
+        - main
 
 jobs:
-  deploy:
-    name: deploy in EC2
-    runs-on: ubuntu-latest
+    deploy: 
+        name: deploy in droplet 
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: build and deploy
-        env: 
-          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-          HOSTNAME: ${{ secrets.HOSTNAME }}
-          USER_NAME: ${{ secrets.USER_NAME }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-        # ssh into instance and deploy
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-          
-            cd /home/ubuntu/QandA-discord-bot &&
-            git checkout main &&
-            git fetch --all && 
-            git reset --hard origin/main &&
-            git pull origin main &&
-            touch .env &&
-            echo "DB_CONNECT=${{ secrets.DB_URI }}" > .env &&
-            echo "TOKEN=${{ secrets.TOKEN }}" >> .env &&
-            sudo docker build -t qanda-discord-bot . &&
-            sudo docker run -d qanda-discord-bot 
-            '
+            - name: Setup SSH and known hosts
+              env:
+                PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                USER_NAME: ${{ secrets.USER_NAME }}
+                HOSTNAME: ${{ secrets.HOSTNAME }}
+              run: |
+                mkdir -p ~/.ssh
+                echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+                chmod 600 ~/.ssh/id_rsa
+                ssh-keyscan ${HOSTNAME} >> ~/.ssh/known_hosts
+                chmod 644 ~/.ssh/known_hosts
+      
+            - name: Install doctl
+              uses: digitalocean/action-doctl@v2
+              with:
+                token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+                
+            - name: Make sure droplet active and running
+              run: |
+                doctl compute droplet list --format PublicIPv4 | awk '$1 == "${{ secrets.HOSTNAME }}" {print "MATCH"; found=1; exit} END {if (!found) {print "NO MATCH"; exit 1}}'
+
+            - name: Deploy to server droplet
+              env: 
+                USER_NAME: ${{ secrets.USER_NAME }}
+                HOSTNAME: ${{ secrets.HOSTNAME }}
+              run: | 
+                ssh ${USER_NAME}@${HOSTNAME} '
+
+                    cd docker-nginx-basic && 
+                    git fetch --all && 
+                    git pull origin main &&
+                    docker-compose up -d --build
+                    '
+                    
+                
