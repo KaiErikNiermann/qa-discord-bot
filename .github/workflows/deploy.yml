@@ -43,9 +43,13 @@ jobs:
                 ssh ${USER_NAME}@${HOSTNAME} '
 
                     cd QandA-discord-bot && 
+                    git checkout main &&
                     git fetch --all && 
                     git pull origin main &&
-                    docker-compose up -d --build
+                    echo "DB_CONNECT=${{ secrets.DB_URI }}" > .env &&
+                    echo "TOKEN=${{ secrets.TOKEN }}" >> .env &&
+                    sudo docker build -t qanda-discord-bot . &&
+                    sudo docker run -d qanda-discord-bot 
                     '
                     
                 
