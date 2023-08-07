@@ -7,6 +7,7 @@ COPY package.json /usr/src/bot
 COPY package-lock.json /usr/src/bot
 COPY .env /usr/src/bot
 RUN npm install
+RUN npm update
 
 COPY . /usr/src/bot/
 
