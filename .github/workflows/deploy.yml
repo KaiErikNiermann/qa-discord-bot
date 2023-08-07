@@ -42,7 +42,7 @@ jobs:
               run: | 
                 ssh ${USER_NAME}@${HOSTNAME} '
 
-                    cd docker-nginx-basic && 
+                    cd QandA-discord-bot && 
                     git fetch --all && 
                     git pull origin main &&
                     docker-compose up -d --build
