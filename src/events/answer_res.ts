@@ -6,107 +6,73 @@ module.exports = {
     async execute(message: Message) {
         try {
             if (
-                message.type == "REPLY" && // message is a reply
+                message.type == "REPLY" &&           // message is a reply
                 !message.content.startsWith(`-e`) && // message is not an edit
-                !message.content.startsWith(`-d`) // message is not a delete
+                !message.content.startsWith(`-d`)    // message is not a delete
             ) {
                 const question_message = await message.fetchReference();
                 const question_embed = question_message.embeds[0];
+                const userString = (id: string) => `<@${id}>`;
                 const user = question_embed.fields[0].value;
+                const db = db_client.db("main_db").collection("QandA_collection");
 
-                // answering embed question
-                const bot_reply = await message.reply(
+                const reply_message = await message.reply(
                     `Hey ${user}, ${message.author.username} tried answering your question. 
                     \nIf you are still confused react with ❔otherwise react with ✅ `
                 );
 
-                bot_reply.react(`❔`);
-                bot_reply.react(`✅`);
+                reply_message.react("❔");
+                reply_message.react("✅");
 
-                const colletionFilter = (
-                    reaction: MessageReaction,
-                    author: User
-                ) => {
-                    const emoji_name: string = reaction.emoji.name ?? ""; // default value in case of null
+                const filter = (reaction: MessageReaction, author: User) => {
                     return (
-                        ["❔", "✅"].includes(emoji_name) &&
-                        `<@${author.id}>` === user
+                        ["❔", "✅"].includes(reaction.emoji.name ?? "") &&
+                        userString(author.id) === user
                     );
-                };
+                }
 
-                // check if answer is already present 
-                const answer = await db_client
-                    .db("main_db")
-                    .collection("QandA_collection")
-                    .findOne({ question: question_embed.title });
-
-                console.log(answer);
-
-                // update db with answer by matching question
-                db_client
-                    .db("main_db")
-                    .collection("QandA_collection")
-                    .updateOne(
-                        { question: question_embed.title },
-                        {
-                            $set: {
-                                answer: `${message.content}`,
-                            },
-                        }
-                    );
-
-                bot_reply
-                    .awaitReactions({
-                        filter: colletionFilter,
-                        max: 1,
-                        time: 60000,
-                        errors: ["time"],
-                    })
+                reply_message.awaitReactions({ filter, max: 1, time: 30000, errors: ["time"] })
                     .then((collected) => {
-                        const reaction: MessageReaction =
-                            collected.first() as MessageReaction;
-
-                        if (reaction.emoji.name === "✅") {
-                            console.log("user is satisfied");
-
-                            // setting embed color to green to indicate solved
-                            const new_embed = new MessageEmbed()
-                                .setColor(`#00ff00`)
+                        const reaction: MessageReaction = collected.last() as MessageReaction;
+                        if (reaction.emoji.name === "❔") {
+                            reply_message.reply(`${userString(message.author.id)} is still confused.`);
+                        } else if (reaction.emoji.name === "✅") {
+                            const updated_embed = new MessageEmbed()
+                                .setColor("#00ff00")
                                 .setTitle(`${question_embed.title}`)
-                                .setDescription(
-                                    `to edit reply with \`-e <your updated question>\``
-                                )
-                                .addFields({
-                                    name: `question from`,
-                                    value: question_embed.fields[0].value,
-                                    inline: true,
-                                });
+                                .setDescription(`${question_embed.description}`)
+                                .addFields(question_embed.fields)
 
-                            question_message.edit({ embeds: [new_embed] });
+                            question_message.edit({ embeds: [updated_embed] });
 
-                            // update db with answer by matching question
-                            db_client
-                                .db("main_db")
-                                .collection("QandA_collection")
-                                .updateOne(
-                                    { question: question_embed.title },
-                                    {
-                                        $set: {
-                                            status: 1,
-                                        },
-                                    }
-                                );
-                        } else {
-                            bot_reply.reply(
-                                `<@${message.author.id}>, ${user} needs more help`
-                            ).catch((err) => console.log(err));
+                            db.updateOne(
+                                { message_id: `${question_message.id}` },
+                                { $set: { 
+                                    answer: `${message.content}`,
+                                    status: 1 
+                                } }
+                            )
+                            
                         }
-                    })
-                    .catch(() => {
-                        bot_reply.reply(
-                            "User did not react, question is closed"
-                        );
-                    }).catch((err) => console.log(err));
+                    }).catch(() => {
+                        db.findOne(
+                            { message_id: `${question_message.id}` },
+                        ).then((result) => {
+                            if (result?.status === 1) {
+                                reply_message.delete().catch(console.error);
+                                return;
+                            } 
+                            reply_message.reply(
+                                `No reaction after 10 seconds, closing question.`
+                            ).then((message) => {
+                                setTimeout(() => {
+                                    message.delete().catch(console.error);
+                                }, 60000 * 10);
+                            })
+                            
+                        });
+                    }); 
+
             }
         } catch (error) {
             // replied message was not a question

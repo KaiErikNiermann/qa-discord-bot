@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const commands: any[] = [];
-const commandsPath = path.join(__dirname, "commands");
+const commandsPath = path.join(__dirname, "../../commands");
 const commandFiles = fs
     .readdirSync(commandsPath)
     .filter((file) => file.endsWith(".ts"));

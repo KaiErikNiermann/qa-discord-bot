@@ -35,36 +35,36 @@ module.exports = {
                 inline: true,
             });
 
-        const deleteButton = new MessageActionRow().setComponents(
-            new MessageButton() // Create the button inside of an action Row
-                .setCustomId("delete_button")
-                .setLabel("delete")
-                .setStyle("PRIMARY")
-        );
-        
-        await interaction.reply({
-            embeds: [questionEmbed],
-            components: [deleteButton],
-        });
-        
-        const message = await interaction.fetchReply();
-
         const questionEntry: db_listing = {
             question: `${user_question}`,
             answer: "",
             status: 0,
-
             guild_id: `${interaction.guildId}`,
             channel_id: `${interaction.channelId}`,
-            message_id: `${message.id}`,
+            message_id: "",
         };
+        
+        const deleteButton = new MessageActionRow().setComponents(
+            new MessageButton() // Create the button inside of an action Row
+            .setCustomId("delete_button")
+            .setLabel("delete")
+            .setStyle("PRIMARY")
+            );
+            
+        await interaction.reply({
+            embeds: [questionEmbed],
+            components: [deleteButton],
+        });
+            
+        const message = await interaction.fetchReply();
+        questionEntry.message_id = message.id;
 
         // add question to db
         const inserted_id = await db_client
             .db("main_db")
             .collection<db_listing>("QandA_collection")
             .insertOne(questionEntry);
-
+            
         console.log("inserted id: ", inserted_id.insertedId);
     },
 };
