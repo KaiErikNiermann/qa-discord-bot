@@ -13,7 +13,7 @@ module.exports = {
 
             await message.channel.send({
                 files: attachments.map((attachment) => attachment.proxyURL),
-                content: `**<@${message.author.id}>** asked: \n${content}`
+                content: `Question from <@${message.author.id}> \n${content}`
             });
         }
     }

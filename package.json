@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "deploy-commands": "ts-node --files src/utils/bot/deploy_commands.ts",
-    "start": "ts-node --files --preferTsExts src/index.ts"
+    "start": "ts-node --files --preferTsExts src/index.ts",
+    "lint": "eslint . --ext .ts"
   },
   "types": "src/index.d.ts",
   "author": "Kai Erik Niermann",
