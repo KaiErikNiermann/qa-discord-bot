@@ -18,7 +18,9 @@ async function main(): Promise<void> {
 
 const db_command_coll = new Collection<string, db_command>();
 
-export { db_client };
+const db = db_client.db("main_db").collection("QandA_collection");
+
+export { db_client, db };
 
 // registering db_commands
 const db_commandsPath: string = path.join(__dirname, "../database");

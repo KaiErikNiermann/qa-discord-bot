@@ -1,6 +1,4 @@
-import {
-    SlashCommandBuilder,
-} from "@discordjs/builders";
+import { SlashCommandBuilder } from "@discordjs/builders";
 import {
     MessageEmbed,
     CommandInteraction,
@@ -43,19 +41,19 @@ module.exports = {
             channel_id: `${interaction.channelId}`,
             message_id: "",
         };
-        
+
         const deleteButton = new MessageActionRow().setComponents(
             new MessageButton() // Create the button inside of an action Row
-            .setCustomId("delete_button")
-            .setLabel("delete")
-            .setStyle("PRIMARY")
-            );
-            
+                .setCustomId("delete_button")
+                .setLabel("delete")
+                .setStyle("PRIMARY")
+        );
+
         await interaction.reply({
             embeds: [questionEmbed],
             components: [deleteButton],
         });
-            
+
         const message = await interaction.fetchReply();
         questionEntry.message_id = message.id;
 
@@ -64,7 +62,7 @@ module.exports = {
             .db("main_db")
             .collection<db_listing>("QandA_collection")
             .insertOne(questionEntry);
-            
+
         console.log("inserted id: ", inserted_id.insertedId);
     },
 };
