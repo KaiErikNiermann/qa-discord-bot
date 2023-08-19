@@ -1,7 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { BaseCommandInteraction, CommandInteraction } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import { utils } from "../utils/utils";
-import { connect } from "http2";
 
 module.exports = {
     name: "get-questions",
@@ -52,9 +51,12 @@ module.exports = {
 
         let questions = await utils.getNQuestions(n, answered, sort_by);
         await interaction.followUp(
-            questions.map((question) => {
-                return `${question[0]} | ${question[1]}`
-            }).join("\n")
+            questions
+                .map((question) => {
+                    console.log(question[2]);
+                    return `${question[0]} | ${question[1]}`;
+                })
+                .join("\n")
         );
     },
 };

@@ -68,12 +68,10 @@ class utils {
         reply_message: Message<boolean>
     ): void {
         db.findOne({ message_id: `${question_message.id}` }).then((result) => {
-            // Question was already answered
             if (result?.status === 1) {
                 reply_message.delete().catch(console.error);
                 return;
             }
-            // User did not respond in time
             reply_message
                 .reply(`No reaction after 10 seconds, closing question.`)
                 .then((message) => {
@@ -152,14 +150,14 @@ class utils {
                 .find(
                     {
                         status:
-                            answered === 1
-                                ? 0
-                                : answered === 0
-                                ? 1
-                                : { $in: [1, 0] },
+                            answered === 1 ? 1:   
+                            answered === 0 ? 0: 
+                                { $in: [1, 0] } 
                     },
                     {
                         limit: n,
+                
+                
                         projection: {
                             _id: 0,
                         },
@@ -185,6 +183,7 @@ class utils {
             return [
                 `https://discord.com/channels/${question.guild_id}/${question.channel_id}/${question.message_id}`,
                 utils.deconstruct(parseInt(question.message_id)).timestamp,
+                question.status
             ];
         });
 
