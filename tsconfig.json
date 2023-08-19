@@ -9,7 +9,7 @@
         "src/utils/bot/deploy_commands.ts",
         "src/utils/bot/db.ts",
         "src/utils/database/create.ts",
-        "src/events/answer_res.ts",
+        "src/events/answer_res_embed.ts",
         "src/commands/question.ts"
     ],
     "compilerOptions": {

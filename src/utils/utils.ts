@@ -149,15 +149,10 @@ class utils {
             await db
                 .find(
                     {
-                        status:
-                            answered === 1 ? 1:   
-                            answered === 0 ? 0: 
-                                { $in: [1, 0] } 
+                        status: answered === 1 ? 1 : answered === 0 ? 0 : { $in: [1, 0] },
                     },
                     {
                         limit: n,
-                
-                
                         projection: {
                             _id: 0,
                         },
@@ -172,18 +167,18 @@ class utils {
                 utils.deconstruct(parseInt(b.message_id)).timestamp
             );
 
-            if (sort_by === "newest") {
+            if (sort_by === "newest") 
                 return timestampB - timestampA;
-            } else {
+            else 
                 return timestampA - timestampB;
-            }
+            
         });
 
         const urls = results.map((question) => {
             return [
                 `https://discord.com/channels/${question.guild_id}/${question.channel_id}/${question.message_id}`,
                 utils.deconstruct(parseInt(question.message_id)).timestamp,
-                question.status
+                question.status,
             ];
         });
 

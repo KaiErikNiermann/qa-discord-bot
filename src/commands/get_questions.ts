@@ -53,8 +53,8 @@ module.exports = {
         await interaction.followUp(
             questions
                 .map((question) => {
-                    console.log(question[2]);
-                    return `${question[0]} | ${question[1]}`;
+                    let status = parseInt(question[2]) === 1 ? "answered" : "unanswered";
+                    return `${status} ~ ${question[0]} | ${question[1]}`;
                 })
                 .join("\n")
         );
