@@ -41,7 +41,6 @@ const change_stream = db_client
 
 change_stream.on("change", (change) => {
     if (change.operationType === "update") {
-        console.log("Changed entry:", change.fullDocument);
         if (change.fullDocument?.status === 1) return;        
 
         const channel: TextChannel = client.channels.cache.get(

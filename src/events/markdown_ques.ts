@@ -10,11 +10,18 @@ module.exports = {
 
             await message.delete()
 
-            await message.channel.send({
+            const question_message = await message.channel.send({
                 files: attachments.map((attachment) => attachment.proxyURL),
                 content: `Question from <@${message.author.id}> \n${content}`,
                 components: [utils.deleteButton()]
             });
+
+            utils.insertQuestion(
+                question_message.content,
+                `${question_message.guildId}`,
+                `${question_message.channelId}`,
+                `${question_message.id}`
+            )
         }
     }
 

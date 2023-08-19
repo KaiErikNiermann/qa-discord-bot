@@ -29,14 +29,6 @@ module.exports = {
                 inline: true,
             });
 
-        const questionEntry: db_listing = {
-            question: `${user_question}`,
-            answer: "",
-            status: 0,
-            guild_id: `${interaction.guildId}`,
-            channel_id: `${interaction.channelId}`,
-            message_id: "",
-        };
 
         await interaction.reply({
             embeds: [questionEmbed],
@@ -44,9 +36,14 @@ module.exports = {
         });
 
         const message = await interaction.fetchReply();
-        questionEntry.message_id = message.id;
 
-        const inserted_id = await db.insertOne(questionEntry);
+        const inserted_id = await utils.insertQuestion(
+            `${user_question}`,
+            `${interaction.guildId}`,
+            `${interaction.channelId}`,
+            `${message.id}`
+        );
+
         console.log("inserted id: ", inserted_id.insertedId);
     },
 };

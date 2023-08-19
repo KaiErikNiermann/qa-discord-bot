@@ -30,7 +30,7 @@ module.exports = {
                 } else if (reaction.emoji.name === "✅") {
                     const solved_question = question_message.content
                         .replace("Question from", "**Solved** question from")
-                        .concat(`\n\n Goto ${message.url}, to view the answer`)
+                        .concat(`\n- Goto ${message.url}, to view an answer`)
 
                     question_message.edit(solved_question);
                     question_message.suppressEmbeds(true);

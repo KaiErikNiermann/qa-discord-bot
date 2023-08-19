@@ -7,7 +7,6 @@ declare global {
         question: string;
         answer: string;
         status: number;
-        
         guild_id: string;
         channel_id: string;
         message_id: string;

@@ -1,3 +1,4 @@
+import { InsertOneResult } from "mongodb";
 import { db } from "./bot/db";
 import {
     Message,
@@ -83,18 +84,18 @@ class utils {
         });
     }
 
-    public static addSolved(id: string, answer: string): void {
-        db.updateOne(
+    public static async addSolved(id: string, answer: string): Promise<void> {
+        let arr = (await db.findOne({ message_id: id }))?.answer ?? [];
+
+        await db.updateOne(
             { message_id: id },
             {
                 $set: {
-                    answer: answer,
+                    answers: [...arr, answer],
                     status: 1,
                 },
             }
-        ).catch((error) => {
-            console.error(`There was an error updating the database: ${error}`);
-        });
+        );
     }
 
     public static deleteButton() {
@@ -124,14 +125,84 @@ class utils {
         }
     }
 
-    public static deletedQuestionHandler() {
-        // If the question was answered
-            // Return 
-        // Else
-            // Delete the answer
-            // Delete the question reply
-    } 
-            
+    public static async insertQuestion(
+        question: string,
+        guildId: string,
+        channelId: string,
+        messageId: string
+    ): Promise<InsertOneResult<Document>> {
+        console.log(`inserted question with ID ${messageId}`);
+        return await db.insertOne({
+            question: question,
+            answers: [],
+            status: 0,
+            guild_id: guildId,
+            channel_id: channelId,
+            message_id: messageId,
+        });
+    }
+
+    public static async getNQuestions(
+        n: number,
+        answered: number,
+        sort_by: string
+    ): Promise<string[][]> {
+        const results = (
+            await db
+                .find(
+                    {
+                        status:
+                            answered === 1
+                                ? 0
+                                : answered === 0
+                                ? 1
+                                : { $in: [1, 0] },
+                    },
+                    {
+                        limit: n,
+                        projection: {
+                            _id: 0,
+                        },
+                    }
+                )
+                .toArray()
+        ).sort((a, b) => {
+            const timestampA = Date.parse(
+                utils.deconstruct(parseInt(a.message_id)).timestamp
+            );
+            const timestampB = Date.parse(
+                utils.deconstruct(parseInt(b.message_id)).timestamp
+            );
+
+            if (sort_by === "newest") {
+                return timestampB - timestampA;
+            } else {
+                return timestampA - timestampB;
+            }
+        });
+
+        const urls = results.map((question) => {
+            return [
+                `https://discord.com/channels/${question.guild_id}/${question.channel_id}/${question.message_id}`,
+                utils.deconstruct(parseInt(question.message_id)).timestamp,
+            ];
+        });
+
+        return urls;
+    }
+
+    public static deconstruct(snowflake: number) {
+        const BINARY = snowflake.toString(2).padStart(64, "0");
+        const res = {
+            timestamp: new Date(
+                parseInt(BINARY.substring(0, 42), 2) + 1420070400000
+            ).toLocaleString(),
+            workerID: parseInt(BINARY.substring(42, 47), 2),
+            processID: parseInt(BINARY.substring(47, 52), 2),
+            increment: parseInt(BINARY.substring(52, 64), 2),
+        };
+        return res;
+    }
 }
 
 export { utils };

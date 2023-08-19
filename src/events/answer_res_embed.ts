@@ -28,16 +28,13 @@ module.exports = {
                     const reaction: MessageReaction = collected.last() as MessageReaction;
                     if (reaction.emoji.name === "❔") {
                         reply_message.reply(`${utils.userString(message.author.id)} is still confused.`);
-                        reply_message.delete().catch(console.error);
+                        utils.deleteHandler(reply_message);
                     } else if (reaction.emoji.name === "✅") {
                         question_embed = question_embed.setColor("#00ff00");
-
                         question_message.edit({ embeds: [question_embed] });
-
+                        
                         utils.addSolved(question_message.id, message.content);
-
-                        reply_message.delete().catch(console.error);
-
+                        utils.deleteHandler(reply_message);
                     } else {
                         reply_message.reply(`Invalid choice.`);
                     }
