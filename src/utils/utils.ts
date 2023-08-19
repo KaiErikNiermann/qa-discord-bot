@@ -149,7 +149,12 @@ class utils {
             await db
                 .find(
                     {
-                        status: answered === 1 ? 1 : answered === 0 ? 0 : { $in: [1, 0] },
+                        status:
+                            answered === 1
+                                ? 1
+                                : answered === 0
+                                ? 0
+                                : { $in: [1, 0] },
                     },
                     {
                         limit: n,
@@ -167,11 +172,8 @@ class utils {
                 utils.deconstruct(parseInt(b.message_id)).timestamp
             );
 
-            if (sort_by === "newest") 
-                return timestampB - timestampA;
-            else 
-                return timestampA - timestampB;
-            
+            if (sort_by === "newest") return timestampB - timestampA;
+            else return timestampA - timestampB;
         });
 
         const urls = results.map((question) => {

@@ -29,8 +29,8 @@ module.exports = {
         )
         .addNumberOption((option) =>
             option
-                .setName("answered")
-                .setDescription("answered")
+                .setName("status")
+                .setDescription("status of question")
                 .addChoices(
                     { name: "answered", value: 1 },
                     { name: "unanswered", value: 0 },
