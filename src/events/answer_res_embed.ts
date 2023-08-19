@@ -8,7 +8,7 @@ module.exports = {
             const question_message = await message.fetchReference();
             let question_embed = question_message.embeds[0];
             
-            if (!utils.isQuestionEmbed(question_embed)) {
+            if (!utils.isEmbedQuestion(question_embed)) {
                 return;
             }
 

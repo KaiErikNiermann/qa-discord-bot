@@ -10,9 +10,7 @@ module.exports = {
             utils.isMdQuestion(await message.fetchReference())
         ) { 
             const question_message = await message.fetchReference();
-            const user = question_message.content
-            .split("\n")[0]
-            .split(" ")[2]
+            const user = question_message.content.split("\n")[0].split(" ")[2];
 
             const reply_message = await utils.answerReply(message, user);
 

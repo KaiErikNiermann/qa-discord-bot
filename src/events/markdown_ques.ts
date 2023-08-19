@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { utils } from "../utils/utils";
 
 module.exports = {
     name: "messageCreate",
@@ -7,13 +8,12 @@ module.exports = {
             const content = message.content.slice(3);
             const attachments = message.attachments.toJSON();
 
-            console.log(attachments);
-
             await message.delete()
 
             await message.channel.send({
                 files: attachments.map((attachment) => attachment.proxyURL),
-                content: `Question from <@${message.author.id}> \n${content}`
+                content: `Question from <@${message.author.id}> \n${content}`,
+                components: [utils.deleteButton()]
             });
         }
     }

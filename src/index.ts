@@ -56,7 +56,6 @@ const loadEvents = (eventsPath: string) => {
     }
 };
 
-// listen for interactions
 const registerInteractions = () => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isCommand()) return;
