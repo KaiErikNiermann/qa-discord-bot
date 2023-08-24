@@ -44,17 +44,20 @@ module.exports = {
         const sort_by = interaction.options.getString("sort-by") ?? "newest";
 
         await interaction.reply(
-            `getting ${n} ${
-                answered ? "answered" : "unanswered"
+            `getting ${n} ${answered ? "answered" : "unanswered"
             } questions sorted by ${sort_by}`
         );
 
-        let questions = await utils.getNQuestions(n, answered, sort_by);
+        const questions = await utils.getNQuestions(n, answered, sort_by);
         await interaction.followUp(
             questions
                 .map((question) => {
-                    let status = parseInt(question[2]) === 1 ? "answered" : "unanswered";
-                    return `${status} ~ ${question[0]} | ${question[1]}`;
+                    const status = parseInt(question[2]) === 1 ? "✅ answered" : "❔ unanswered";
+                    return [
+                        `### ${status}`,
+                        `Q: ${question[3].split('\n')[1].slice(0, 20)}...[see more](${question[0]})\n`,
+                        `${question[0]} | ${question[1]}`
+                    ].join("\n");
                 })
                 .join("\n")
         );

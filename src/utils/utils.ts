@@ -16,15 +16,15 @@ class utils {
         return `<@${id}>`;
     }
 
-    public static isAnswer(message: Message): Boolean {
+    public static isAnswer(message: Message): boolean {
         return message.type === "REPLY" && !message.content.startsWith("-e");
     }
 
-    public static isMdQuestion(message: Message): Boolean {
+    public static isMdQuestion(message: Message): boolean {
         return message.content.startsWith("Question from");
     }
 
-    public static isEdit(message: Message): Boolean {
+    public static isEdit(message: Message): boolean {
         return (
             message.type === "REPLY" &&
             message.content.startsWith("-e") &&
@@ -51,7 +51,7 @@ class utils {
         return reply_message;
     }
 
-    public static isEmbedQuestion(question_embed: MessageEmbed): Boolean {
+    public static isEmbedQuestion(question_embed: MessageEmbed): boolean {
         try {
             if (question_embed.fields[0].name !== "question from") {
                 return false;
@@ -83,7 +83,7 @@ class utils {
     }
 
     public static async addSolved(id: string, answer: string): Promise<void> {
-        let arr = (await db.findOne({ message_id: id }))?.answer ?? [];
+        const arr = (await db.findOne({ message_id: id }))?.answer ?? [];
 
         await db.updateOne(
             { message_id: id },
@@ -181,6 +181,7 @@ class utils {
                 `https://discord.com/channels/${question.guild_id}/${question.channel_id}/${question.message_id}`,
                 utils.deconstruct(parseInt(question.message_id)).timestamp,
                 question.status,
+                question.question
             ];
         });
 
