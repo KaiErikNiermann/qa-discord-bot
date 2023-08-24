@@ -1,4 +1,4 @@
-import { MessageEmbed, Message, MessageReaction, User } from "discord.js";
+import { Message, MessageReaction, User } from "discord.js";
 import { utils } from "../utils/utils";
 
 module.exports = {

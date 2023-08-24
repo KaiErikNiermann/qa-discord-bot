@@ -1,6 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageEmbed, CommandInteraction } from "discord.js";
-import { db } from "../utils/bot/db";
 import { utils } from "../utils/utils";
 
 module.exports = {
@@ -37,13 +36,11 @@ module.exports = {
 
         const message = await interaction.fetchReply();
 
-        const inserted_id = await utils.insertQuestion(
+        await utils.insertQuestion(
             `${user_question}`,
             `${interaction.guildId}`,
             `${interaction.channelId}`,
             `${message.id}`
         );
-
-        console.log("inserted id: ", inserted_id.insertedId);
     },
 };

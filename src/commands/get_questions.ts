@@ -46,8 +46,9 @@ module.exports = {
         await interaction.reply(
             `getting ${n} ${answered ? "answered" : "unanswered"
             } questions sorted by ${sort_by}`
-        );
-
+        )
+        
+        // TODO - maybe use embeds for this 
         const questions = await utils.getNQuestions(n, answered, sort_by);
         await interaction.followUp(
             questions

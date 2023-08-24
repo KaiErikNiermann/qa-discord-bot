@@ -1,5 +1,4 @@
-import { MessageEmbed, Message, MessageReaction, User } from "discord.js";
-import { db, db_client } from "../utils/bot/db";
+import { Message, MessageReaction, User } from "discord.js";
 import { utils } from "../utils/utils";
 
 module.exports = {
@@ -30,7 +29,7 @@ module.exports = {
                 } else if (reaction.emoji.name === "✅") {
                     const solved_question = question_message.content
                         .replace("Question from", "**Solved** question from")
-                        .concat(`\n- Goto ${message.url}, to view an answer`)
+                        .concat(`\nGoto ${message.url}, to view an answer`)
 
                     question_message.edit(solved_question);
                     question_message.suppressEmbeds(true);

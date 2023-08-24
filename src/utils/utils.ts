@@ -76,8 +76,9 @@ class utils {
                 .reply(`No reaction after 10 seconds, closing question.`)
                 .then((message) => {
                     setTimeout(() => {
+                        reply_message.delete().catch(console.error);
                         message.delete().catch(console.error);
-                    }, 60000 * 10);
+                    }, 5000);
                 });
         });
     }
@@ -140,6 +141,13 @@ class utils {
         });
     }
 
+    /**
+     * 
+     * @param n number of questions to get
+     * @param answered 1 for answered, 0 for unanswered, 2 for both
+     * @param sort_by newest or oldest
+     * @returns An object containing the question link, timestamp, status and text
+     */
     public static async getNQuestions(
         n: number,
         answered: number,

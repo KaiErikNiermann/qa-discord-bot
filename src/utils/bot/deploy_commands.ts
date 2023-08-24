@@ -3,11 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
+import type { RESTPostAPIApplicationCommandsJSONBody } from "discord-api-types/v9";
 
 import dotenv from "dotenv";
 dotenv.config();
 
-const commands: any[] = [];
+const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const commandsPath = path.join(__dirname, "../../commands");
 const commandFiles = fs
     .readdirSync(commandsPath)

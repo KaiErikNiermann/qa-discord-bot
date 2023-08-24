@@ -1,5 +1,4 @@
-import { MessageEmbed, Message } from "discord.js";
-import { db } from "../utils/bot/db";
+import { Message } from "discord.js";
 import { utils } from "../utils/utils";
 
 module.exports = {
