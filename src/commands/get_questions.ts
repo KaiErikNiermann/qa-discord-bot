@@ -13,9 +13,9 @@ module.exports = {
                 .setDescription("number of questions to get")
                 .setRequired(true)
                 .addChoices(
+                    { name: "1", value: 1 },
+                    { name: "5", value: 5 },
                     { name: "10", value: 10 },
-                    { name: "25", value: 25 },
-                    { name: "50", value: 50 }
                 )
         )
         .addStringOption((option) =>

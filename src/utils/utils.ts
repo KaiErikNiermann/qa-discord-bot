@@ -16,12 +16,12 @@ class utils {
         return `<@${id}>`;
     }
 
-    public static isAnswer(message: Message): boolean {
-        return message.type === "REPLY" && !message.content.startsWith("-e");
+    public static questionContent(message: string): string {
+        return message.split("\n---")[1];
     }
 
-    public static isMdQuestion(message: Message): boolean {
-        return message.content.startsWith("Question from");
+    public static isAnswer(message: Message): boolean {
+        return message.type === "REPLY" && !message.author.bot;
     }
 
     public static isEdit(message: Message): boolean {
@@ -51,18 +51,6 @@ class utils {
         return reply_message;
     }
 
-    public static isEmbedQuestion(question_embed: MessageEmbed): boolean {
-        try {
-            if (question_embed.fields[0].name !== "question from") {
-                return false;
-            }
-        } catch (error) {
-            return false;
-        }
-
-        return true;
-    }
-
     public static noReactionHandler(
         question_message: Message<boolean>,
         reply_message: Message<boolean>
@@ -85,7 +73,6 @@ class utils {
 
     public static async addSolved(id: string, answer: string): Promise<void> {
         const arr = (await db.findOne({ message_id: id }))?.answer ?? [];
-
         await db.updateOne(
             { message_id: id },
             {
@@ -97,11 +84,24 @@ class utils {
         );
     }
 
-    public static deleteButton() {
+    public static questionButtons() {
         return new MessageActionRow().setComponents(
             new MessageButton()
                 .setCustomId("delete_button")
                 .setLabel("delete")
+                .setStyle("PRIMARY"),
+            new MessageButton()
+                .setCustomId("copy_button")
+                .setLabel("copy")
+                .setStyle("PRIMARY")
+        );
+    }
+
+    public static copyButton() {
+        return new MessageActionRow().setComponents(
+            new MessageButton()
+                .setCustomId("copy_button")
+                .setLabel("copy")
                 .setStyle("PRIMARY")
         );
     }
@@ -115,13 +115,7 @@ class utils {
     }
 
     public static async getUser(message: Message): Promise<string | undefined> {
-        const question_embed = message.embeds[0];
-
-        if (utils.isMdQuestion(message)) {
-            return message.content.split("\n")[0].split(" ")[2];
-        } else if (utils.isEmbedQuestion(question_embed)) {
-            return question_embed.fields[0].value;
-        }
+        return message.content.split("\n")[0].split(" ")[2];
     }
 
     public static async insertQuestion(

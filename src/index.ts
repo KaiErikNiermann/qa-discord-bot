@@ -19,7 +19,7 @@ const command_collection: Collection<string, command> = new Collection<
     command
 >();
 
-const loadCommands = (commandsPath: string) => {
+function loadCommands(commandsPath: string) {
     const commandFiles = fs
         .readdirSync(commandsPath)
         .filter((file) => file.endsWith(".ts"));
@@ -35,7 +35,7 @@ const loadCommands = (commandsPath: string) => {
     }
 };
 
-const loadEvents = (eventsPath: string) => {
+function loadEvents(eventsPath: string) {
     const eventFiles = fs
         .readdirSync(eventsPath)
         .filter((file) => file.endsWith(".ts"));
@@ -56,7 +56,7 @@ const loadEvents = (eventsPath: string) => {
     }
 };
 
-const registerInteractions = () => {
+function registerInteractions() {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isCommand()) return;
 
@@ -73,8 +73,7 @@ const registerInteractions = () => {
     });
 };
 
-// setup bot
-const startBot = () => {
+function startBot() {
     const commandsPath = path.join(__dirname, "commands");
     const eventsPath = path.join(__dirname, "events");
 
