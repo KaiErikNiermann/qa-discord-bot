@@ -1,11 +1,6 @@
 import { InsertOneResult } from "mongodb";
 import { db } from "./bot/db";
-import {
-    Message,
-    MessageEmbed,
-    MessageActionRow,
-    MessageButton,
-} from "discord.js";
+import { Message, MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 
 class utils {
     public static getFormattedDate(date: Date): string {
@@ -25,21 +20,14 @@ class utils {
     }
 
     public static isEdit(message: Message): boolean {
-        return (
-            message.type === "REPLY" &&
-            message.content.startsWith("-e") &&
-            !message.author.bot
-        );
+        return message.type === "REPLY" && message.content.startsWith("-e") && !message.author.bot;
     }
 
     public static removePrefix(message: Message): string {
         return message.content.slice(3);
     }
 
-    public static async answerReply(
-        message: Message,
-        user: string
-    ): Promise<Message<boolean>> {
+    public static async answerReply(message: Message, user: string): Promise<Message<boolean>> {
         const reply_message = await message.reply(
             `Hey ${user}, ${message.author.username} tried answering your question. 
             \nIf you are still confused react with ❔ otherwise react with ✅.`
@@ -86,23 +74,14 @@ class utils {
 
     public static questionButtons() {
         return new MessageActionRow().setComponents(
-            new MessageButton()
-                .setCustomId("delete_button")
-                .setLabel("delete")
-                .setStyle("PRIMARY"),
-            new MessageButton()
-                .setCustomId("copy_button")
-                .setLabel("copy")
-                .setStyle("PRIMARY")
+            new MessageButton().setCustomId("delete_button").setLabel("delete").setStyle("PRIMARY"),
+            new MessageButton().setCustomId("copy_button").setLabel("copy").setStyle("PRIMARY")
         );
     }
 
     public static copyButton() {
         return new MessageActionRow().setComponents(
-            new MessageButton()
-                .setCustomId("copy_button")
-                .setLabel("copy")
-                .setStyle("PRIMARY")
+            new MessageButton().setCustomId("copy_button").setLabel("copy").setStyle("PRIMARY")
         );
     }
 
@@ -122,7 +101,8 @@ class utils {
         question: string,
         guildId: string,
         channelId: string,
-        messageId: string
+        messageId: string,
+        managerMessageId: string
     ): Promise<InsertOneResult<Document>> {
         console.log(`inserted question with ID ${messageId}`);
         return await db.insertOne({
@@ -132,11 +112,19 @@ class utils {
             guild_id: guildId,
             channel_id: channelId,
             message_id: messageId,
+            manager_message_id: managerMessageId,
         });
     }
 
+    public static async getManager(messageId: string) {
+        const res = await db.findOne({
+            message_id: messageId,
+        })
+        return res?.manager_message_id;
+    }
+
     /**
-     * 
+     *
      * @param n number of questions to get
      * @param answered 1 for answered, 0 for unanswered, 2 for both
      * @param sort_by newest or oldest
@@ -151,12 +139,7 @@ class utils {
             await db
                 .find(
                     {
-                        status:
-                            answered === 1
-                                ? 1
-                                : answered === 0
-                                ? 0
-                                : { $in: [1, 0] },
+                        status: answered === 1 ? 1 : answered === 0 ? 0 : { $in: [1, 0] },
                     },
                     {
                         limit: n,
@@ -167,12 +150,8 @@ class utils {
                 )
                 .toArray()
         ).sort((a, b) => {
-            const timestampA = Date.parse(
-                utils.deconstruct(parseInt(a.message_id)).timestamp
-            );
-            const timestampB = Date.parse(
-                utils.deconstruct(parseInt(b.message_id)).timestamp
-            );
+            const timestampA = Date.parse(utils.deconstruct(parseInt(a.message_id)).timestamp);
+            const timestampB = Date.parse(utils.deconstruct(parseInt(b.message_id)).timestamp);
 
             if (sort_by === "newest") return timestampB - timestampA;
             else return timestampA - timestampB;
@@ -183,7 +162,7 @@ class utils {
                 `https://discord.com/channels/${question.guild_id}/${question.channel_id}/${question.message_id}`,
                 utils.deconstruct(parseInt(question.message_id)).timestamp,
                 question.status,
-                question.question
+                question.question,
             ];
         });
 

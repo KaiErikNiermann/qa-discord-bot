@@ -9,8 +9,6 @@
         "src/utils/bot/deploy_commands.ts",
         "src/utils/bot/db.ts",
         "src/utils/database/create.ts",
-        "src/events/answer_res_embed.ts",
-        "src/commands/question.ts"
     ],
     "compilerOptions": {
         "target": "es2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,

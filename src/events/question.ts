@@ -6,25 +6,20 @@ module.exports = {
     async execute(message: Message) {
         if (message.content.startsWith("-q")) {
             const content = message.content.slice(3);
-            const attachments = message.attachments.toJSON();
+            const attachments: string[] = message.attachments
+                .toJSON()
+                .map((attachment) => attachment.url);
 
-            await message.delete();
-
-            const question_message = await message.channel.send({
-                files: attachments.map((attachment) => attachment.proxyURL),
-                content: `Question from <@${message.author.id}> \n--- \n${content}\n---`,
-                components: [utils.questionButtons()],
-            });
-
-            question_message.edit(
-                question_message.content.concat(`\nID ~ \`${question_message.id}\``)
+            const manager_message = await message.reply(
+                `Question from ${utils.userString(message.author.id)}\n`
             );
 
-            utils.insertQuestion(
-                question_message.content,
-                `${question_message.guildId}`,
-                `${question_message.channelId}`,
-                `${question_message.id}`
+            await utils.insertQuestion(
+                `${message.author.id}\n${content}\n${attachments.join("\n")}`,
+                `${message.guildId}`,
+                `${message.channelId}`,
+                `${message.id}`,
+                `${manager_message.id}`
             );
         }
     },

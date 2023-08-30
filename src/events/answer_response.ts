@@ -6,8 +6,10 @@ module.exports = {
     async execute(message: Message) {
         if (utils.isAnswer(message)) {
             const question_message = await message.fetchReference();
-            const user = question_message.content.split("\n")[0].split(" ")[2];
-
+            const manager_message = await message.channel.messages.fetch(
+                await utils.getManager(question_message.id)
+            )
+            const user = manager_message.content.split("\n")[0].split(" ")[2];
             const reply_message = await utils.answerReply(message, user);
 
             const filter = (reaction: MessageReaction, author: User) => {
@@ -25,29 +27,21 @@ module.exports = {
                     errors: ["time"],
                 })
                 .then((collected) => {
-                    const reaction: MessageReaction =
-                        collected.last() as MessageReaction;
+                    const reaction: MessageReaction = collected.last() as MessageReaction;
                     if (reaction.emoji.name === "❔") {
                         reply_message.reply(
-                            `${utils.userString(
-                                message.author.id
-                            )} is still confused.`
+                            `${utils.userString(message.author.id)} is still confused.`
                         );
                         reply_message.delete().catch(console.error);
                     } else if (reaction.emoji.name === "✅") {
-                        const solved_question = question_message.content
-                            .replace(
-                                "Question from",
-                                "**Solved** question from"
-                            )
-                            .concat(
-                                `\n- Goto ${message.url}, to view an answer`
-                            );
+                        const solved_question = manager_message.content
+                            .replace("Question from", "**Solved** question from")
+                            .concat(`\n- Goto ${message.url}, to view an answer`);
 
-                        question_message.edit(solved_question);
-                        question_message.suppressEmbeds(true);
+                        manager_message.edit(solved_question);
+                        manager_message.suppressEmbeds(true);
 
-                        utils.addSolved(question_message.id, message.content);
+                        utils.addSolved(manager_message.id, message.content);
 
                         reply_message.delete().catch(console.error);
                     } else {
@@ -55,7 +49,7 @@ module.exports = {
                     }
                 })
                 .catch(() => {
-                    utils.noReactionHandler(question_message, reply_message);
+                    utils.noReactionHandler(manager_message, reply_message);
                 });
         }
     },
