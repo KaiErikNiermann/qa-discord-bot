@@ -9,7 +9,9 @@ module.exports = {
             const manager_message = await message.channel.messages.fetch(
                 await utils.getManager(question_message.id)
             )
-            const user = manager_message.content.split("\n")[0].split(" ")[2];
+
+            console.log(manager_message.content);
+            const user = (manager_message.content)?.split("\n")[0].split(" ")[2];
             const reply_message = await utils.answerReply(message, user);
 
             const filter = (reaction: MessageReaction, author: User) => {
