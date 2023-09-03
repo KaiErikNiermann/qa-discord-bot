@@ -61,13 +61,13 @@ class utils {
 
     public static async addSolved(id: string, answer: string): Promise<void> {
         console.log(`added answer to question with ID ${id}`); 
-        const arr = (await db.findOne({ message_id: id }))?.answer;
-        console.log(arr);
+        let arr: string[] = (await db.findOne({ message_id: id }))?.answers ?? [];
+        arr.push(answer);
         await db.updateOne(
             { message_id: id },
             {
                 $set: {
-                    answers: [...arr, answer],
+                    answers: arr,
                     status: 1,
                 },
             }

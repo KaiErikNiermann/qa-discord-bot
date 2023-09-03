@@ -43,7 +43,7 @@ module.exports = {
                         manager_message.edit(solved_question);
                         manager_message.suppressEmbeds(true);
 
-                        utils.addSolved(manager_message.id, message.content);
+                        utils.addSolved(question_message.id, message.content);
 
                         reply_message.delete().catch(console.error);
                     } else {
